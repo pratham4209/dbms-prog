@@ -1,0 +1,874 @@
+create table department
+(
+dname varchar(20),
+dnumber number(2),
+MGRSSN number(4),
+MGRSTARDATE DATE,
+primary key(dnumber)
+);
+
+
+CREATE TABLE PROJCT
+(
+PNAME VARCHAR(20),
+PNUMBER NUMBER(4),
+PLOCATION VARCHAR(20),
+DNUM NUMBER(2),
+PRIMARY KEY (PNUMBER),
+FOREIGN KEY(DNUM)REFERENCES DEPARTMENT(DNUMBER));
+
+CREATE TABLE EMPLOYEE
+(
+FNAME VARCHAR(20),
+MINIT VARCHAR(15),
+LNAME VARCHAR(10),
+SSN NUMBER(4),
+BDATE DATE,
+ADDRESS VARCHAR(20),
+SEX CHAR(5),
+SALARY NUMBER(5),
+SUPERSSN NUMBER(4),
+DNO NUMBER(2),
+PRIMARY KEY(SSN),
+FOREIGN KEY(DNO)REFERENCES DEPARTMENT(DNUMBER));
+
+
+
+CREATE TABLE DEPT_LOCATION
+(
+DNUMBER NUMBER(2),
+DLOCATION VARCHAR(20),
+FOREIGN KEY(DNUMBER)REFERENCES DEPARTMENT(DNUMBER));
+
+
+CREATE TABLE WORKS_ON
+(
+ESSN NUMBER(4),
+PNO NUMBER(10),
+HOUR NUMBER(2),
+PRIMARY KEY(ESSN,PNO),
+FOREIGN KEY(ESSN)REFERENCES EMPLOYEE(SSN),
+FOREIGN KEY(PNO)REFERENCES PROJCT(PNUMBER));
+
+
+CREATE TABLE DEPENDENT
+(
+ESSN NUMBER(6),
+DEPENDENT_NAME VARCHAR(20),
+SEX CHAR(1),
+BDATE DATE,
+REALATIONSHIP VARCHAR(10),
+FOREIGN KEY(ESSN)REFERENCES EMPLOYEE(SSN));
+............................................................................................................................................................'
+
+CREATE TABLE PUBLISHER
+(
+NAME VARCHAR(20),
+ADDRESS VARCHAR(20),
+PHONE NUMBER(10),
+PRIMARY KEY(NAME)
+);
+
+
+CREATE TABLE BOOK
+(
+BOOK_ID NUMBER(4),
+TITTLE VARCHAR(20),
+PUBLISHER_NAME VARCHAR(20),
+PUB_YEAR NUMBER(4),
+PRIMARY KEY(BOOK_ID),
+FOREIGN KEY (PUBLISHER_NAME) REFERENCES PUBLISHER(NAME));
+
+CREATE TABLE BOOK_AUTHORS
+(
+BOOK_ID NUMBER(4),
+AUTHOR_NAME VARCHAR(20),
+FOREIGN KEY(BOOK_ID)REFERENCES BOOK(BOOK_ID)ON DELETE CASCADE);
+
+CREATE TABLE LIBRARY_PROGRAMME
+(
+PROGRAMME_ID NUMBER(4),
+PROGRAMME_NAME VARCHAR(15),
+ADDRESS VARCHAR(20),
+PRIMARY KEY(PROGRAMME_ID)
+);
+
+CREATE TABLE CARD 
+(
+CARD_NO NUMBER(4),
+PRIMARY KEY(CARD_NO)
+);
+
+
+CREATE TABLE BOOK_COPIES
+(
+BOOK_ID NUMBER(4),
+PROGRAMME_ID NUMBER(4),
+NO_OF_COPIES NUMBER(5),
+PRIMARY KEY(BOOK_ID,PROGRAMME_ID),
+FOREIGN KEY(BOOK_ID)REFERENCES BOOK(BOOK_ID)ON DELETE CASCADE,
+FOREIGN KEY(PROGRAMME_ID)REFERENCES LIBRARY_PROGRAMME(PROGRAMME_ID)ON DELETE CASCADE);
+
+
+create table book_lending
+(
+book_id number(4),
+programme_id number (4),
+card_no number(4),
+date_out date,
+due_date date,
+foreign key(book_id) references BOOK(BOOK_ID)ON DELETE CASCADE,
+foreign key(programme_id) references library_programme(programme_id)ON DELETE CASCADE,
+foreign key(card_no) references card (card_no)ON DELETE CASCADE);
+
+publisher;
+
+insert into publisher values('green book','karwar',556456156);
+
+insert into publisher values('book house','dubai',7858856156);
+
+
+insert into publisher values('one line','USA',55545456);
+
+
+insert into publisher values('read only','london',78921346);
+
+
+insert into publisher values('ready shining','mysore',8962486);
+
+
+book:
+
+
+insert into book values(1000,'the shining','green book',2017);
+
+
+
+insert into book values(1001,'braking bad','book house',2019);
+
+
+
+insert into book values(1002,'terminator','one line',1998);
+
+
+
+insert into book values(1003,'space odisey','read only',1995);
+
+
+
+insert into book values(1004,'transformer','ready shining',2020);
+
+
+
+
+AUTHOR:
+
+
+
+insert into book_AUTHORS values(1000,'JJ MARTIN');
+
+
+insert into book_AUTHORS values(1001,'MARTIN SCROCES');
+
+
+insert into book_AUTHORS values(1002,'DAVID FINCHER');
+
+
+insert into book_AUTHORS values(1003,'VETRIMAN');
+
+
+insert into book_AUTHORS values(1004,'UPENDRA');
+
+
+LIBRARY_PROGRAMME:
+
+insert into LIBRARY_PROGRAMMES values(2000,'HELLO BOOK','NEWYOCK');
+
+insert into LIBRARY_PROGRAMME values(2001,'prog book 1','london');
+insert into LIBRARY_PROGRAMME values(2002,'PROGRAM BOOK 2','AMIRACA');
+insert into LIBRARY_PROGRAMME values(2003,'PROGRAM BOOK 3','CANADA');
+insert into LIBRARY_PROGRAMME values(2004,'PROGRAM BOOK 4','INDIA');
+insert into LIBRARY_PROGRAMME values(2005,'HELLO BOOK 3','GERMENY');
+
+CARD
+
+INSERT INTO CARD VALUES(0000);
+INSERT INTO CARD VALUES(0001);
+INSERT INTO CARD VALUES(0002);
+INSERT INTO CARD VALUES(0003);
+INSERT INTO CARD VALUES(0004);
+
+BOOK COPIES
+
+INSERT INTO BOOK_LENDING VALUES(1000,2000,0000,'11-JAN-2017','11-JAN-2017');
+INSERT INTO BOOK_LENDING VALUES(1000,2001,0001,'12-FEB-2017','14-JAN-2017');
+INSERT INTO BOOK_LENDING VALUES(1000,2002,0002,'16-NOV-2018','12-JAN-2017');
+INSERT INTO BOOK_LENDING VALUES(1000,2003,0003,'11-JAN-2017','11-JAN-2017');
+INSERT INTO BOOK_LENDING VALUES(1000,2004,0004,'12-FEB-2017','14-JUL-2017');
+
+
+INSERT INTO BOOK_COPIES VALUES(1000,2000,150);
+INSERT INTO BOOK_COPIES VALUES(1000,2001,200);
+INSERT INTO BOOK_COPIES VALUES(1000,2002,520);
+INSERT INTO BOOK_COPIES VALUES(1000,2003,550);
+INSERT INTO BOOK_COPIES VALUES(1000,2004,450);
+
+
+SELECT B.BOOK_ID,B.TITTLE,B.PUBLISHER_NAME,A.AUTHOR_NAME,C.NO_OF_COPIES,L.PROGRAMME_ID
+FROM BOOK B,BOOK_AUTHORS A,BOOK_COPIES C,LIBRARY_PROGRAMME L
+WHERE B.BOOK_ID=C.BOOK_ID AND L.PROGRAMME_ID=C.PROGRAMME_ID;
+
+
+CREAT VIEW V_PUBLICATION AS
+SELECT PUB_YEAR
+FROM BOOK;
+
+
+CREAT VIEW V BOOK AS
+
+
+SELECT B.BOOK_ID,B.TITTLE,B.PUBLISHER_NAME,A.AUTHOR_NAME,C.NO_OF_COPIES,L.PROGRAMME_ID
+FROM BOOK B,BOOK_AUTHORS A,BOOK_COPIES C,LIBRARY_PROGRAMME L
+WHERE B.BOOK_ID=C.BOOK_ID AND L.PROGRAMME_ID=C.PROGRAMME_ID;
+
+........................................................................................................................................................................
+create table salesman
+(
+salesman_id number(4),
+name varchar(20),
+city varchar(20),
+commision varchar(20),
+primary key (salesman_id)
+);
+
+
+
+create table customer
+(
+customer_id number(4),
+customer_name varchar(20),
+city varchar(20),
+grade number(3),
+primary key(customer_id),
+salesman_id references SALESMAN(salesman_id) on delete set null
+);
+
+
+create table orders
+(
+order_no number(5),
+purchase_amt number(10),
+order_date date,
+primary key(order_no),
+customer_id references customer(customer_id)on delete cascade,
+salesman_id references salesman(salesman_id)on delete cascade
+);
+
+
+
+INSERT INTO SALESMAN VALUES(1000,'VINOD','MANGLORE','20%');
+INSERT INTO SALESMAN VALUES(2000,'GANESH','MUMABI','30%');
+INSERT INTO SALESMAN VALUES(3000,'RAMESH','PUNE','40%');
+INSERT INTO SALESMAN VALUES(4000,'SURESH','DELHI','50%');
+INSERT INTO SALESMAN VALUES(5000,'KRISHNA','BOHPAL','60%');
+
+
+
+INSERT INTO CUSTOMER VALUES(1,'RAMESH','CANADA',5,1000);
+INSERT INTO CUSTOMER VALUES(2,'RAKESH','LONDON',3,2000);
+INSERT INTO CUSTOMER VALUES(3,'SURESH','UK',4,3000);
+INSERT INTO CUSTOMER VALUES(4,'RAJU','DUBAI',5,4000);
+INSERT INTO CUSTOMER VALUES(5,'RAJU 2','NEW YOCK',4,5000);
+
+
+INSERT INTO CUSTOMER VALUES(6,'ARJUN','USA',6,1000);
+
+
+INSERT INTO ORDERS VALUES(11,4000,'01-JAN-2023',1,1000);
+
+INSERT INTO ORDERS VALUES(12,5000,'05-FEB-2023',2,2000);
+INSERT INTO ORDERS VALUES(13,6000,'24-JAN-2023',3,3000);
+
+INSERT INTO ORDERS VALUES(14,7000,'01-SEP-2023',4,4000);
+
+INSERT INTO ORDERS VALUES(15,8000,'06-AUG-2023',5,5000);
+
+
+
+
+SELECT GRADE,COUNT(DISTINCT CUSTOMER_ID)
+FROM CUSTOMER
+GROUP BY GRADE
+HAVING GRADE>(SELECT AVG(GRADE)
+FROM CUSTOMER
+WHERE CITY='UK');
+
+
+
+SELECT SALESMAN_ID,NAME
+FROM SALESMAN A
+WHERE 1<(SELECT COUNT(*)
+FROM CUSTOMER
+WHERE SALESMAN_ID=A.SALESMAN_ID);
+
+
+SELECT SALESMAN.SALESMAN_ID,NAME,CUSTOMER_NAME,COMMISION
+FROM SALESMAN,CUSTOMER
+WHERE SALESMAN.CITY=CUSTOMER.CITY
+UNION
+SELECT SALESMAN_ID,NAME,'NO MATCH',COMMISION
+FROM SALESMAN
+WHERE NOT CITY=ANY
+(SELECT CITY
+FROM CUSTOMER)
+ORDER BY 2 DESC;
+
+
+CREATE VIEW ELITSALESMAN AS
+SELECT B.ORDER_DATE,A.SALESMAN_ID,A.NAME
+FROM SALESMAN A,ORDERS B
+WHERE A.SALESMAN_ID=B.SALESMAN_ID AND B.PURCHASE_AMT=(SELECT MAX(PURCHASE_AMT)
+FROM ORDERS C
+WHERE C.ORDER_DATE=B.ORDER_DATE);
+
+
+.......................................................................................................................................................................................
+
+CREATE TABLE ACTOR
+(
+ACT_ID NUMBER(10) PRIMARY KEY,
+ACT_NAME VARCHAER(25),
+ACT_GENDER CHAR(1));
+
+
+
+
+CREATE TABLE DIRECTOR
+(
+DIR_ID NUMBER(3)PRIMARY KEY,
+DIR_NAME VARCHAR (25),
+DIR_PHONE NUMBER(10));
+
+
+CREATE TABLE MOVIES
+(
+MOV_ID NUMBER(10)PRIMARY KEY,
+MOV_TITLE VARCHAR(25),
+MOV_YEAR NUMBER(4),
+MOV_LANG VARCHAR(20),
+DIR_ID NUMBER(10),
+FOREIGN KEY(DIR_ID)REFERENCES DIRECTOR(DIR_ID) );
+
+CREATE TABLE MOVIE_CAST
+(
+ACT_ID NUMBER(10),
+MOVIE_ID NUMBER(10),
+ROLE VARCHAR(20),
+PRIMARY KEY(ACT_ID,MOV_ID),
+FOREIGN KEY(ACT_ID)REFERENCES ACT(ACT_ID)
+FOREIGN KEY(MOV_ID)REFERENCES MOV(MOV_ID));
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
++
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
++
++
++
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
++
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
