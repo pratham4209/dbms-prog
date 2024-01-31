@@ -369,8 +369,123 @@ FOREIGN KEY(ACT_ID)REFERENCES ACT(ACT_ID)
 FOREIGN KEY(MOV_ID)REFERENCES MOV(MOV_ID));
 
 
+.......................................................................................................................................................................
+
+STUDENT
 
 
+create table student
+(
+usn varchar(10)primary key,
+sname varchar(10),
+address varchar(10),
+phone_no number(10),
+gender varchar(10)
+);
+
+create table semsec
+(
+ssid varchar (5)primary key,
+sem number(3),
+sec char(1)
+);
+
+
+create table class 
+(
+usn varchar(10),
+ssid varchar(5),
+primary key(usn,ssid),
+foreign key(usn)references student(usn),
+foreign key(ssid)references semsec(ssid));
+
+
+create table subject 
+(
+subcode varchar(9),
+title varchar(6),
+sem number(2),
+credits number(2),
+primary key(subcode));
+
+create table imarks
+(
+usn varchar(10),
+subcode varchar(8),
+ssid varchar(8),
+test1 number(5),
+test2 number(5),
+test3 number(2),
+finalia number(2),
+primary key(usn,subcode,ssid),
+foreign key(usn)references student(usn),
+foreign key(subcode)references subject(subcode),
+foreign key(ssid)references semsec(ssid));
+
+
+
+insert into student values('4mt22cs408','rahul','manglore',88846753,'m');
+insert into student values('4mt22cs404','geetha','manglore',8867753,'f');
+insert into student values('4mt22cs403','rohan','mysore',886482353,'m');
+insert into student values('4mt22cs402','suresh','mysore',88648953,'m');
+insert into student values('4mt22cs412','ramesh','mumbai',23426953,'m');
+insert into student values('4mt22cs123','rakesh','delhi',88687953,'m');
+insert into student values('4mt22cs145','kiran','udupi',88649873,'m');
+insert into student values('4mt22cs400','virat','manglore',88648953,'m');
+insert into student values('4mt22cs154','rohit','punjab',86748953,'m');
+
+
+
+insert into semsec values('cs1a',5,'a');
+insert into semsec values('cs2a',5,'a');
+insert into semsec values('cs3a',5,'a');
+insert into semsec values('cs1b',5,'b');
+insert into semsec values('cs2b',5,'b');
+insert into semsec values('cs3b',5,'b');
+insert into semsec values('cs1c',5,'c');
+insert into semsec values('cs2c',5,'c');
+insert into semsec values('cs3c',5,'c');
+insert into semsec values('cs4c',5,'c');
+
+
+insert into class values('4mt22cs408','cs1a');
+insert into class values('4mt22cs404',cs2a');
+insert into class values('4mt22cs403','cs3a');
+insert into class values('4mt22cs402','cs1b');
+insert into class values('4mt22cs412','cs2b');
+insert into class values('4mt22cs123','cs3b');
+insert into class values('4mt22cs145','cs1c');
+insert into class values('4mt22cs400','cs2c');
+insert into class values('4mt22cs154','cs3c');
+
+
+insert into subject values('21cs51','ATC',5,3);
+insert into subject values('21cs57','CN',5,3);
+insert into subject values('21cs55','DBMS',5,3);
+insert into subject values('21cs52','DAA',5,3);
+insert into subject values('21cs58','EVS',5,3);
+insert into subject values('21cs50','AIML',5,3);
+insert into subject values('21cs43','SQL',5,3);
+insert into subject values('21cs41','analog',5,3);
+insert into subject values('21cs48','java',5,3);
+insert into subject values('21cs49','C++',5,3);
+
+
+
+insert into imarks values('4mt22cs408','21cs51','cs1a',12,14,15,16);
+insert into imarks values('4mt22cs404','21cs57','cs2a',16,16,18,15);
+insert into imarks values('4mt22cs403','21cs55','cs3a',12,15,16,17);
+insert into imarks values('4mt22cs402','21cs52','cs1b',15,16,18,16);
+insert into imarks values('4mt22cs412','21cs58','cs2b',14,17,16,19);
+insert into imarks values('4mt22cs123','21cs50','cs3b',16,16,18,16);
+insert into imarks values('4mt22cs145','21cs43','cs1c',15,17,15,10);
+insert into imarks values('4mt22cs400','21cs41','cs2c',14,15,17,19);
+insert into imarks values('4mt22cs154','21cs48','cs3c',15,18,19,10);
+
+
+select s.*,ss.sem,ss.sec
+from student s,semsec ss,class c
+where s.usn=c.usn and ss.ssid=c.ssid and ss.sem=5 and ss.ssid=c.ssid;
 
 
 
