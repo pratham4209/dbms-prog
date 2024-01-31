@@ -490,6 +490,20 @@ where s.usn=c.usn and ss.ssid=c.ssid and ss.sem=5 and ss.ssid=c.ssid;
 
 
 
+select ss.sem,ss.sec,s.gender,count(s.gender)as count
+from student s,semsec ss,class c
+where s.usn=c.usn and ss.ssid=c.ssid
+group by ss.sem,ss.sec,s.gender
+order by sem;
+
+create view stu_test as
+select test1,subcode
+from imarks
+where usn='4mt22cs403';
+
+
+
+
 
 
 
